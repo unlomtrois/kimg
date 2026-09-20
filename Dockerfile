@@ -23,8 +23,12 @@ COPY *.go ./
 # buildx sets these from --platform, defaulting to the host's own platform.
 # CGO is off, so cross building needs no extra toolchain.
 ARG TARGETOS TARGETARCH
+
+# The build context carries no .git, so the version cannot be read from the
+# repository. Stamp it instead: docker build --build-arg VERSION=v0.1.0 ...
+ARG VERSION=devel
 RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH \
-    go build -trimpath -ldflags="-s -w" -o /out/kimg .
+    go build -trimpath -ldflags="-s -w -X main.version=$VERSION" -o /out/kimg .
 
 # Run the tests instead of exporting a binary: docker build --target test .
 FROM build AS test

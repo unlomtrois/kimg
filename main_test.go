@@ -133,3 +133,32 @@ func TestParseCell(t *testing.T) {
 		}
 	}
 }
+
+func TestCLIVersion(t *testing.T) {
+	stdout, _, err := exec(t, "--version")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.HasPrefix(stdout, "kimg ") {
+		t.Errorf("got %q, want it to start with \"kimg \"", stdout)
+	}
+	if strings.TrimSpace(strings.TrimPrefix(stdout, "kimg ")) == "" {
+		t.Error("version is empty")
+	}
+}
+
+func TestBuildVersionPrefersLinkerStamp(t *testing.T) {
+	saved := version
+	t.Cleanup(func() { version = saved })
+
+	version = "v9.9.9"
+	if got := buildVersion(); got != "v9.9.9" {
+		t.Errorf("got %q, want the stamped value", got)
+	}
+
+	// Falling back to build metadata must still say something usable.
+	version = ""
+	if got := buildVersion(); got == "" {
+		t.Error("fallback version is empty")
+	}
+}

@@ -43,6 +43,8 @@ $ docker build --output type=local,dest=. .
 $ install -m 755 kimg ~/.local/bin/
 ```
 
+The build context carries no `.git`, so pass `--build-arg VERSION=v0.1.0` if you want `kimg --version` to report something other than `devel`.
+
 The final stage is empty, so no image is added to your image store; `--output type=local` just drops the binary next to you. Podman finds the `Dockerfile` without `-f` as well.
 
 Cross building needs no extra toolchain, since CGO is off:

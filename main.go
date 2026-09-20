@@ -57,12 +57,15 @@ func newRootCmd() *cobra.Command {
 			"sees them as ordinary text: tmux reserves the lines, repaints them on redraw\n" +
 			"and scrolls them into its history. Pass --direct for a plain placement, which\n" +
 			"is simpler but is not tracked by tmux.",
+		Version:      buildVersion(),
 		Args:         cobra.MinimumNArgs(1),
 		SilenceUsage: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return run(cmd.OutOrStdout(), cmd.ErrOrStderr(), args, opt)
 		},
 	}
+
+	cmd.SetVersionTemplate("kimg {{.Version}}\n")
 
 	f := cmd.Flags()
 	f.IntVarP(&opt.cols, "cols", "c", 0, "width in terminal cells (0 fits the terminal, capped at the image's own size)")
