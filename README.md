@@ -34,6 +34,29 @@ $ go build -o kimg .
 
 Requires Go 1.26. The only dependency is cobra.
 
+### Without Go installed
+
+The repository builds itself in a container, so nothing but Docker or Podman is needed:
+
+```console
+$ docker build --output type=local,dest=. .
+$ install -m 755 kimg ~/.local/bin/
+```
+
+The final stage is empty, so no image is added to your image store; `--output type=local` just drops the binary next to you. Podman finds the `Dockerfile` without `-f` as well.
+
+Cross building needs no extra toolchain, since CGO is off:
+
+```console
+$ docker build --platform linux/arm64 --output type=local,dest=. .
+```
+
+To run the tests in the container instead:
+
+```console
+$ docker build --target test .
+```
+
 ## Usage
 
 ```
@@ -96,6 +119,7 @@ $ printf '\033Ptmux;\033\033_Ga=d,d=A\033\033\\\033\\'         # inside tmux
 | `kitty.go` | protocol encoding: APC framing, chunking, image ids, tmux passthrough |
 | `placeholder.go` | virtual placements and the placeholder grid |
 | `diacritics.go` | generated from kitty's `rowcolumn-diacritics.txt`; do not edit |
+| `Dockerfile` | builds the binary without Go on the host |
 
 ## Acknowledgements
 
