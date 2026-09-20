@@ -19,6 +19,14 @@ To tmux those are ordinary characters. It reserves the lines, repaints them on r
 ## Install
 
 ```console
+$ go install github.com/unlomtrois/kimg@latest
+```
+
+This puts `kimg` in `$(go env GOPATH)/bin`, usually `~/go/bin`. Make sure that is on your `PATH`.
+
+Or build from a clone:
+
+```console
 $ git clone https://github.com/unlomtrois/kimg
 $ cd kimg
 $ go build -o kimg .

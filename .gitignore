@@ -1,0 +1,6 @@
+# Build output
+/kimg
+
+# Test and coverage artifacts
+*.test
+*.out

@@ -1,4 +1,4 @@
-module kimg
+module github.com/unlomtrois/kimg
 
 go 1.26
 
